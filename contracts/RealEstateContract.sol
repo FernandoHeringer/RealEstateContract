@@ -14,3 +14,20 @@ contract RealEstate {
         address buyer; // Address of the buyer (if sold)
         bool isSold; // Status of the property
     }
+
+  // Mapping to store properties by their ID
+    mapping(uint => Property) public properties;
+
+    // Counter for property IDs
+    uint public propertyCount;
+
+    // Event declarations
+    event PropertyListed(uint propertyId, string description, uint price, address seller);
+    event PropertySold(uint propertyId, address buyer, uint price);
+    event PaymentReleased(uint propertyId, address seller, uint price);
+
+    // Modifier to restrict functions to the contract owner
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only the contract owner can perform this action.");
+        _;
+    }
