@@ -77,3 +77,16 @@ contract RealEstate {
 
         emit PropertySold(_propertyId, msg.sender, property.price);
     }
+
+// Function to release payment to the seller
+    function releasePayment(uint _propertyId) public onlySeller(_propertyId) {
+        Property storage property = properties[_propertyId];
+
+        require(property.isSold, "Property is not sold yet.");
+        require(property.buyer != address(0), "No buyer for this property.");
+
+        uint amount = property.price;
+        property.seller.transfer(amount);
+
+        emit PaymentReleased(_propertyId, property.seller, amount);
+    }
