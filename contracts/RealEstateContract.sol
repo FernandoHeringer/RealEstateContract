@@ -61,3 +61,19 @@ contract RealEstate {
 
         propertyCount++;
     }
+
+      // Function to buy a property
+    function buyProperty(uint _propertyId) public payable {
+        require(_propertyId < propertyCount, "Invalid property ID.");
+        Property storage property = properties[_propertyId];
+
+        require(!property.isSold, "Property already sold.");
+        require(msg.value == property.price, "Incorrect payment amount.");
+        require(property.seller != msg.sender, "Seller cannot buy their own property.");
+
+        // Transfer ownership to the buyer
+        property.buyer = msg.sender;
+        property.isSold = true;
+
+        emit PropertySold(_propertyId, msg.sender, property.price);
+    }
