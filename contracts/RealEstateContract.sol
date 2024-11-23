@@ -31,3 +31,33 @@ contract RealEstate {
         require(msg.sender == owner, "Only the contract owner can perform this action.");
         _;
     }
+
+ // Modifier to restrict functions to the property seller
+    modifier onlySeller(uint _propertyId) {
+        require(properties[_propertyId].seller == msg.sender, "Only the seller can perform this action.");
+        _;
+    }
+
+    // Constructor to set the contract owner
+    constructor() {
+        owner = msg.sender;
+    }
+
+    // Function to list a property
+    function listProperty(string memory _description, uint _price) public {
+        require(_price > 0, "Price must be greater than zero.");
+
+        // Create a new property and add it to the mapping
+        properties[propertyCount] = Property(
+            propertyCount,
+            _description,
+            _price,
+            payable(msg.sender),
+            address(0),
+            false
+        );
+
+        emit PropertyListed(propertyCount, _description, _price, msg.sender);
+
+        propertyCount++;
+    }
