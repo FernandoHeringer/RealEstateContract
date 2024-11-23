@@ -103,7 +103,7 @@ contract RealEstate {
             bool isSold
         )
     {
-        require(_propertyId < propertyCount, "Invalid property ID.");
+      require(_propertyId < propertyCount, "Invalid property ID.");
         Property memory property = properties[_propertyId];
         return (property.description, property.price, property.seller, property.buyer, property.isSold);
     }
