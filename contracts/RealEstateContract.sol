@@ -90,3 +90,21 @@ contract RealEstate {
 
         emit PaymentReleased(_propertyId, property.seller, amount);
     }
+
+      // Function to get property details
+    function getPropertyDetails(uint _propertyId)
+        public
+        view
+        returns (
+            string memory description,
+            uint price,
+            address seller,
+            address buyer,
+            bool isSold
+        )
+    {
+        require(_propertyId < propertyCount, "Invalid property ID.");
+        Property memory property = properties[_propertyId];
+        return (property.description, property.price, property.seller, property.buyer, property.isSold);
+    }
+}
